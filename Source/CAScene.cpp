@@ -25,7 +25,7 @@ void CAScene::Update()
 
 	m_cells->Write(m_cells->m_width / 2, 0, 1);
 
-	int rule = 18;
+	int rule = 129;
 	for (int y = 0; y < m_cells->m_height - 1; y++)
 	{
 		for (int x = 1; x < m_cells->m_width - 1; x++)
