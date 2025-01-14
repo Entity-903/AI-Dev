@@ -15,4 +15,5 @@ public:
 	std::unique_ptr<Framebuffer> m_framebuffer;
 	std::unique_ptr<Cells<uint8_t>> m_cellsA;
 	std::unique_ptr<Cells<uint8_t>> m_cellsB;
+	int m_frame = 0;
 };

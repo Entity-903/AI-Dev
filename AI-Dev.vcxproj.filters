@@ -40,6 +40,9 @@
     <ClInclude Include="Source\Cells.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GOLScene.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Input.cpp">
@@ -64,6 +67,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GOLScene.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

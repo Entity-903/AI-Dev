@@ -165,6 +165,7 @@
     <ClInclude Include="Source\ETime.h" />
     <ClInclude Include="Source\ExampleScene.h" />
     <ClInclude Include="Source\Framebuffer.h" />
+    <ClInclude Include="Source\GOLScene.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\MathUtils.h" />
     <ClInclude Include="Source\Random.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Source\ETime.cpp" />
     <ClCompile Include="Source\ExampleScene.cpp" />
     <ClCompile Include="Source\Framebuffer.cpp" />
+    <ClCompile Include="Source\GOLScene.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />

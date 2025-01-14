@@ -1,8 +1,9 @@
 #include "GOLScene.h"
 #include <random>
+#include "Random.h"
 
-color_t white{ 255, 255, 255, 255 };
-color_t black{ 0, 0, 0, 255 };
+const color_t white{ 255, 255, 255, 255 };
+const color_t black{ 0, 0, 0, 255 };
 
 bool GOLScene::Initialize()
 {
@@ -29,15 +30,16 @@ void GOLScene::Update()
 
 	std::fill(nextCells->m_data.begin(), nextCells->m_data.end(), 0);
 
-	//
-	//if (m_input.GetKeyDown(SDL_SCANCODE_SPACE))
-	//{
-	//	for ()
-	//	{
-	//
-	//	}
-	//}
-	//
+	// Needs code for spontanious existance
+	if (m_input.GetKeyDown(SDL_SCANCODE_SPACE))
+	{
+		for (int i = 0; i < nextCells->m_data.size(); i++)
+		{
+			nextCells->m_data[i] = (random(2) == 0) ? 1 : 0;
+			//nextCells->m_data[i] = (rand() % 2 == 0) ? 1 : 0;
+		}
+	}
+	
 
 	for (int y = 1; y < nextCells->m_height - 1; y++)
 	{
@@ -76,59 +78,26 @@ void GOLScene::Update()
 			if (currentState)
 			{
 				// alive, stay alive if 2-3 neighbors, else die
-				if (!(count == 2 || count == 3))
-				{
-					nextState = 0;
-				}
-				//nextState = (count == 2 || count == 3) ? 1 : 0;
+				nextState = (count == 2 || count == 3) ? 1 : 0;
+				nextCells->Write(x, y, nextState);
 			}
 			else
 			{
 				// dead, make alive if 3 neighbors
-				if (count == 3)
-				{
-					nextState = 1;
-				}
-				//nextState = (count == 3) ? 1 : 0;
+				nextState = (count == 3) ? 1 : 0;
+				nextCells->Write(x, y, nextState);
 			}
 
-			nextCells->Write(x, y, nextState);
+			
 		}
 	}
 
-	//m_cells->Write(m_cells->m_width / 2, 0, 1);
-
-	//int rule = 18;
-	//for (int y = 0; y < m_cells->m_height - 1; y++)
-	//{
-	//	for (int x = 1; x < m_cells->m_width - 1; x++)
-	//	{
-	//		int i = 0; // variable to store the 3-bit neighborhood pattern (0-7) for the current cell.
-	//
-	//		// create the 3-bit neighborhood pattern from the values of the neighboring cells in the current row.
-	//		i |= (int)(m_cells->Read(x - 1, y) << 2);	// [X,0,0]
-	//		i |= (int)(m_cells->Read(x + 0, y) << 1);	// [0,X,0]
-	//		i |= (int)(m_cells->Read(x + 1, y) << 0);	// [0,0,X]
-	//
-	//		// extract the new state of the cell based on the rule:
-	//		// - the `rule` is a number where each bit represents the output state for a specific 3-bit input pattern.
-	//		// - use a bitwise AND to isolate the bit corresponding to the current neighborhood pattern `i`.
-	//		uint8_t state = (rule & (1 << i)) ? 1 : 0;
-	//
-	//		// write the calculated state to the cell directly below the current cell (next generation).
-	//		m_cells->Write(x, y + 1, state);
-	//	}
-	//}
-
-	m_framebuffer->Clear(color_t{ 0, 0, 0, 255 });
 	// write cells to the framebuffer
-	//for (int i = 0; i < m_cells->m_data.size(); i++)
-	//{
-	//	if (m_cells->m_data[i])
-	//	{
-	//		m_framebuffer->m_buffer[i] = color_t{ 255, 255, 255, 255 };
-	//	}
-	//}
+	m_framebuffer->Clear(color_t{ 0, 0, 0, 255 });
+	for (int i = 0; i < nextCells->m_data.size(); i++)
+	{
+		m_framebuffer->m_buffer[i] = (nextCells->m_data[i]) ? white : black;
+	}
 }
 
 void GOLScene::Draw()
