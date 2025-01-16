@@ -35,8 +35,13 @@ void GOLScene::Update()
 	{
 		for (int i = 0; i < nextCells->m_data.size(); i++)
 		{
+			// It appears that this code does not refresh the screen. Known after observing a glider move uninterrupted after tapping the space bar
+			// It was expected that if it did refresh the screen with new information, the glider should have stopped existing
 			nextCells->m_data[i] = (random(2) == 0) ? 1 : 0;
-			//nextCells->m_data[i] = (rand() % 2 == 0) ? 1 : 0;
+			//if (random(60) == 0)
+			//{
+			//	nextCells->m_data[i] = 1;
+			//}
 		}
 	}
 	
@@ -47,8 +52,7 @@ void GOLScene::Update()
 		{
 			int count = 0;
 
-			// Make this a for() loop that excludes checking the center location (0, 0)
-
+			// for() loop that excludes checking the center location (0, 0)
 			for (int a = -1; a < 2; a++)
 			{
 				for (int b = -1; b < 2; b++)
@@ -60,32 +64,30 @@ void GOLScene::Update()
 				}
 			}
 
-			//-----------------------------
-			//count += currentCells->Read(x - 1, y - 1);
-			//count += currentCells->Read(x,     y - 1 );
-			//count += currentCells->Read(x + 1, y - 1);
-			//
-			//count += currentCells->Read(x - 1, y);
-			//count += currentCells->Read(x + 1, y);
-			//
-			//count += currentCells->Read(x - 1, y + 1);
-			//count += currentCells->Read(x,     y + 1 );
-			//count += currentCells->Read(x + 1, y + 1);
-
 			// do the game of life rules
 			uint8_t currentState = currentCells->Read(x, y);
-			uint8_t nextState;
+			//uint8_t nextState;
 			if (currentState)
 			{
 				// alive, stay alive if 2-3 neighbors, else die
-				nextState = (count == 2 || count == 3) ? 1 : 0;
+				uint8_t nextState = (count == 2 || count == 3) ? 1 : 0;
 				nextCells->Write(x, y, nextState);
 			}
 			else
 			{
 				// dead, make alive if 3 neighbors
-				nextState = (count == 3) ? 1 : 0;
-				nextCells->Write(x, y, nextState);
+				if (count == 3)
+				{
+					nextCells->Write(x, y, 1);
+				}
+				// 
+				// making an else statement that sets the cell to dead results in only the edges generating living pixels
+				// How would being redundant, saying a dead cell is dead, cause this behaviour?
+				//nextState = (count == 2 || count == 3) ? 1 : 0;
+				//nextCells->Write(x, y, nextState);
+
+				// When creating life, there is no evidence to suggest that any cells are generated in locations that are not the edges of the window
+				// presuming that living cells are in fact generated in the "dead zone", the previous logic determining life or death must be influencing survivability in heavy favor of death
 			}
 
 			
